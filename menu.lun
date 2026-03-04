@@ -1,0 +1,39 @@
+-- تحميل المكتبة وقائمة كسر الحماية المتطورة
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com"))()
+local Window = Library.CreateLib("🛡️ قائمة المطور | كاسر الحماية", "Midnight")
+
+local Tab = Window:NewTab("تعديلات اللاعب")
+local Section = Tab:NewSection("كسر حماية الحركة")
+
+-- ميزة السرعة مع تخطي الحماية (Bypass)
+Section:NewSlider("السرعة الخارقة", "اسحب لتعديل سرعتك بنفسك", 500, 16, function(s)
+    local Hum = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+    Hum.WalkSpeed = s
+    -- كود إجبار القيمة ضد نظام الحماية (تكرار التثبيت)
+    Hum:GetPropertyChangedSignal("WalkSpeed"):Connect(function()
+        if Hum.WalkSpeed ~= s then Hum.WalkSpeed = s end
+    end)
+end)
+
+-- ميزة القفز مع تخطي الحماية (Bypass)
+Section:NewSlider("قوة القفز", "اسحب لتعديل ارتفاع القفزة", 500, 50, function(s)
+    local Hum = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+    Hum.JumpPower = s
+    Hum.UseJumpPower = true
+    -- كود إجبار القيمة ضد نظام الحماية
+    Hum:GetPropertyChangedSignal("JumpPower"):Connect(function()
+        if Hum.JumpPower ~= s then Hum.JumpPower = s end
+    end)
+end)
+
+-- قفز لانهائي (طيران)
+Section:NewToggle("قفز لانهائي (طيران)", "يسمح لك بالقفز المتكرر في الهواء", function(state)
+    _G.InfJump = state
+    game:GetService("UserInputService").JumpRequest:Connect(function()
+        if _G.InfJump then
+            game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid"):ChangeState("Jumping")
+        end
+    end)
+end)
+
+print("🚀 تم تفعيل قائمة كسر الحماية بنجاح!")
